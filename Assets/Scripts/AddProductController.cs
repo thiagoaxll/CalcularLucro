@@ -133,7 +133,7 @@ public class AddProductController : MonoBehaviour
         }
         else
         {
-            Debug.Log("Produto inválido");
+            TCode.Utils.DebbugerText("Produto inválido", new Vector2(0, 0), true);
         }
 
         GeneralController.instance.WhichWindowToShow(0);

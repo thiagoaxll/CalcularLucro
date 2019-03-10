@@ -14,7 +14,7 @@ using System.IO;
 public class GeneralController : MonoBehaviour
 {
 
-    const string PRODUCT_PATH = "/StreamingAssets/Products.json";
+    const string PRODUCT_PATH = "/Resources/Products.json";
 
     [SerializeField] private AddProductController addProductController;
     [SerializeField] private RegisteredProductsController registeredProductsController;
@@ -31,12 +31,27 @@ public class GeneralController : MonoBehaviour
 
     public List<string> registredProducts = new List<string>();
 
+    private TextAsset dataText;
+
 
     private void Awake()
     {
+        if (!PlayerPrefs.HasKey("Setup"))
+        {
+            dataText = Resources.Load("Products") as TextAsset;
+            File.WriteAllText(Application.persistentDataPath + "/Products.json", dataText.ToString());
+            PlayerPrefs.SetString("Setup", "configurado");
+        }
         LoadJsonObject();
         instance = this;
         WhichWindowToShow(0);
+    }
+
+
+    public void DelleteAllRegisteredProducts()
+    {
+        PlayerPrefs.DeleteKey("Setup");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Main");
     }
 
 
@@ -53,6 +68,7 @@ public class GeneralController : MonoBehaviour
                 addProductController.DestroyAllFillContent();
                 registeredProductsController.DestroyAllProducts();
                 LoadJsonObject();
+
                 addProductController.ClearInfo();
                 break;
             case 2:
@@ -74,13 +90,27 @@ public class GeneralController : MonoBehaviour
 
     public void LoadJsonObject()
     {
+
+#if UNITY_EDITOR_WIN
         jsonData = (JSONObject)JSON.Parse(File.ReadAllText(Application.dataPath + PRODUCT_PATH));
+#endif
+
+#if UNITY_ANDROID
+        jsonData = (JSONObject)JSON.Parse(File.ReadAllText(Application.persistentDataPath + "/Products.json"));
+#endif
+
     }
 
 
     public void SaveJsonObject()
     {
+#if UNITY_EDITOR_WIN
         File.WriteAllText(Application.dataPath + PRODUCT_PATH, jsonData.ToString());
+#endif
+
+#if UNITY_ANDROID
+        File.WriteAllText(Application.persistentDataPath + "/Products.json", jsonData.ToString());
+#endif
     }
 
 }
