@@ -51,7 +51,7 @@ public class RegisteredProductsController : MonoBehaviour
 
     public void InstantiateProducts()
     {
-        for (int i = 0; i < GeneralController.instance.registredProducts.Count; i++)
+        for (int i = GeneralController.instance.registredProducts.Count - 1; i >= 0; i--)
         {
             GameObject temp = Instantiate(productsBtn);
             temp.transform.SetParent(productsBtnHolder.transform);

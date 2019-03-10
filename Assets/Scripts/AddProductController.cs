@@ -45,17 +45,31 @@ public class AddProductController : MonoBehaviour
     private List<ItemInfo> ingredients = new List<ItemInfo>();
     private RegisteredProductsController registeredProductsController;
 
+    private List<GameObject> fillContent = new List<GameObject>();
+
 
     private void Awake()
     {
         registeredProductsController = FindObjectOfType(typeof(RegisteredProductsController)) as RegisteredProductsController;
     }
 
+
+    public void DestroyAllFillContent()
+    {
+        for (int i = 0; i < fillContent.Count; i++)
+        {
+            Destroy(fillContent[i]);
+            fillContent.Remove(fillContent[i]);
+        }
+    }
+
+
     public void AddFillInformation()
     {
         GameObject temp = Instantiate(fillInformation);
         temp.transform.SetParent(fillInformationHolder.transform);
         addFillInformationBtn.transform.SetAsLastSibling();
+        fillContent.Add(temp);
     }
 
 
@@ -101,11 +115,29 @@ public class AddProductController : MonoBehaviour
         product.quantity = productQuantity;
         product.ingredients = ingredients;
 
-        StoreInfoInJson();
+
+        if (ingredients.Count > 0)
+        {
+            for (int i = 0; i < ingredients.Count; i++)
+            {
+                if (ingredients[i].itemName == "" || ingredients[i].price == 0 || ingredients[i].amount == 0 || ingredients[i].usedAmmount == 0)
+                {
+                    ingredients.Remove(ingredients[i]);
+                }
+            }
+        }
+
+        if (product.name != "" && product.price > 0 && product.quantity > 0 && ingredients.Count > 0)
+        {
+            StoreInfoInJson();
+        }
+        else
+        {
+            Debug.Log("Produto inválido");
+        }
 
         GeneralController.instance.WhichWindowToShow(0);
 
-        
     }
 
 

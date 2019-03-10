@@ -8,7 +8,12 @@
             "izi",
             "Coisa",
             "5",
-            "Batata"
+            "Batata",
+            "Batata1",
+            "Batata2",
+            "Batata3",
+            "Batata4",
+            "Faca"
         ]
     },
     "Peixe": {
@@ -105,6 +110,62 @@
             1,
             2,
             3
+        ]
+    },
+    "Batata1": {
+        "price": 5,
+        "quantity": 1,
+        "ingredients": [
+            "Fuba",
+            5,
+            3,
+            1,
+            "Farinha",
+            1,
+            2,
+            3
+        ]
+    },
+    "Batata2": {
+        "price": 5,
+        "quantity": 1,
+        "ingredients": [
+            "Fuba",
+            5,
+            3,
+            1,
+            "Farinha",
+            1,
+            2,
+            3
+        ]
+    },
+    "Batat3": {
+        "price": 5,
+        "quantity": 1,
+        "ingredients": [
+            "Fuba",
+            5,
+            3,
+            1,
+            "Farinha",
+            1,
+            2,
+            3
+        ]
+    },
+    "Faca": {
+        "price": 1,
+        "quantity": 1,
+        "ingredients": [
+            "arroz",
+            1,
+            1,
+            1,
+            "arroz",
+            1,
+            1,
+            1
         ]
     }
 }

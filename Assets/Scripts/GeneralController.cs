@@ -50,6 +50,7 @@ public class GeneralController : MonoBehaviour
                 registeredProductsController.ShowRegisteredWindow();
                 break;
             case 1:
+                addProductController.DestroyAllFillContent();
                 registeredProductsController.DestroyAllProducts();
                 LoadJsonObject();
                 addProductController.ClearInfo();
