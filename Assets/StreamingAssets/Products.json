@@ -6,7 +6,9 @@
             "x",
             "gg",
             "izi",
-            "Coisa"
+            "Coisa",
+            "5",
+            "Batata"
         ]
     },
     "Peixe": {
@@ -67,6 +69,42 @@
             1,
             1,
             1
+        ]
+    },
+    "5": {
+        "price": 1,
+        "quantity": 1,
+        "ingredients": [
+            "",
+            0,
+            0,
+            0,
+            "",
+            0,
+            0,
+            0,
+            "",
+            0,
+            0,
+            0,
+            "",
+            0,
+            0,
+            0
+        ]
+    },
+    "Batata": {
+        "price": 5,
+        "quantity": 1,
+        "ingredients": [
+            "Fuba",
+            5,
+            3,
+            1,
+            "Farinha",
+            1,
+            2,
+            3
         ]
     }
 }

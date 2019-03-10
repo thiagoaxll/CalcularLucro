@@ -36,7 +36,7 @@ public class GeneralController : MonoBehaviour
     {
         LoadJsonObject();
         instance = this;
-        WhichWindowToShow(1);
+        WhichWindowToShow(0);
     }
 
 

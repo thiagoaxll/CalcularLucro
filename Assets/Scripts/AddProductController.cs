@@ -68,7 +68,7 @@ public class AddProductController : MonoBehaviour
     public void SellPrice(string value)
     {
         value = value.Replace(",", ".");
-        try { sellPrice = float.Parse(value); }
+        try { sellPrice = float.Parse(value); priceTxt.text = "R$ : " + sellPrice.ToString("F2"); }
         catch
         {
             sellPrice = 0;
