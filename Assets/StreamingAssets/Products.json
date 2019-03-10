@@ -1,0 +1,51 @@
+{
+    "RegisteredProductes": {
+        "products": [
+            "Peixe",
+            "a",
+            "x"
+        ]
+    },
+    "Peixe": {
+        "price": 50,
+        "quantity": 1,
+        "ingredients": [
+            "café",
+            10,
+            20,
+            30,
+            "leite",
+            40,
+            50,
+            60
+        ]
+    },
+    "a": {
+        "price": 1,
+        "quantity": 2,
+        "ingredients": [
+            "Fogo",
+            70,
+            80,
+            90,
+            "Agua",
+            100,
+            110,
+            120
+        ]
+    },
+    "x": {
+        "price": 100,
+        "quantity": 150,
+        "ingredients": [
+            "Dia",
+            130,
+            140,
+            150,
+            "Noite",
+            160,
+            170,
+            180
+        ]
+    }
+}
