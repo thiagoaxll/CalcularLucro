@@ -27,21 +27,14 @@ public class CalculateController : MonoBehaviour
     [Space(20)]
     [SerializeField] private TextMeshProUGUI allIngredientsTxt;
 
-
-
-
-    private RegisteredProductsController registeredProductsController;
     [Space(30)]
     public Product product = new Product();
-    private AddProductController controller;
 
 
     private float totalCost;
 
     void Start()
     {
-        registeredProductsController = FindObjectOfType(typeof(RegisteredProductsController)) as RegisteredProductsController;
-        controller = FindObjectOfType(typeof(AddProductController)) as AddProductController;
         FillAllTexts();
     }
 

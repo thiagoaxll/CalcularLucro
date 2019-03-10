@@ -118,7 +118,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 7348711643309957081}
-        m_MethodName: CallCalculateWindow
+        m_MethodName: CalculateWindow
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -147,6 +147,7 @@ MonoBehaviour:
     price: 0
     cost: 0
     profit: 0
+    quantity: 0
     ingredients: []
 --- !u!1 &5017591301024260589
 GameObject:

@@ -45,9 +45,6 @@ public class AddProductController : MonoBehaviour
     private List<ItemInfo> ingredients = new List<ItemInfo>();
     private RegisteredProductsController registeredProductsController;
 
-    public static JSONObject jsonData;
-    private string informationToStore = "";
-
 
     private void Awake()
     {
@@ -103,10 +100,12 @@ public class AddProductController : MonoBehaviour
         product.price = sellPrice;
         product.quantity = productQuantity;
         product.ingredients = ingredients;
+
+        StoreInfoInJson();
+
         GeneralController.instance.WhichWindowToShow(0);
 
-        registeredProductsController.InstantiateProducts();
-        StoreInfoInJson();
+        
     }
 
 
@@ -126,21 +125,21 @@ public class AddProductController : MonoBehaviour
     {
 
         string[] Productfields = { "name", "price", "quantity" };
-        string[] ingredientsFields = { "name", "price", "amount", "usedAmount" };
 
-        jsonData[product.name].Add(Productfields[1], product.price);
-        jsonData[product.name].Add(Productfields[2], product.quantity);
+        GeneralController.instance.jsonData[product.name].Add(Productfields[1], product.price);
+        GeneralController.instance.jsonData[product.name].Add(Productfields[2], product.quantity);
+        GeneralController.instance.jsonData["RegisteredProductes"]["products"].Add(product.name);
 
         for (int i = 0; i < product.ingredients.Count; i++)
         {
-            jsonData[product.name]["ingredients"].Add(product.ingredients[i].itemName);
-            jsonData[product.name]["ingredients"].Add(product.ingredients[i].price);
-            jsonData[product.name]["ingredients"].Add(product.ingredients[i].amount);
-            jsonData[product.name]["ingredients"].Add(product.ingredients[i].usedAmmount);
+            GeneralController.instance.jsonData[product.name]["ingredients"].Add(product.ingredients[i].itemName);
+            GeneralController.instance.jsonData[product.name]["ingredients"].Add(product.ingredients[i].price);
+            GeneralController.instance.jsonData[product.name]["ingredients"].Add(product.ingredients[i].amount);
+            GeneralController.instance.jsonData[product.name]["ingredients"].Add(product.ingredients[i].usedAmmount);
         }
 
-        GeneralController.instance.LoadJsonObject();
         GeneralController.instance.SaveJsonObject();
+        GeneralController.instance.LoadJsonObject();
     }
 
 }

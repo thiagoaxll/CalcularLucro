@@ -3,7 +3,10 @@
         "products": [
             "Peixe",
             "a",
-            "x"
+            "x",
+            "gg",
+            "izi",
+            "Coisa"
         ]
     },
     "Peixe": {
@@ -46,6 +49,24 @@
             160,
             170,
             180
+        ]
+    },
+    "gg": {
+        "price": 1,
+        "quantity": 2
+    },
+    "izi": {
+        "price": 1,
+        "quantity": 2
+    },
+    "Coisa": {
+        "price": 3,
+        "quantity": 1,
+        "ingredients": [
+            "xd",
+            1,
+            1,
+            1
         ]
     }
 }

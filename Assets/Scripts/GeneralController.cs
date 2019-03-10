@@ -29,20 +29,34 @@ public class GeneralController : MonoBehaviour
 
     public JSONObject jsonData;
 
+    public List<string> registredProducts = new List<string>();
 
 
     private void Awake()
     {
+        LoadJsonObject();
         instance = this;
+        WhichWindowToShow(1);
     }
 
 
     public void WhichWindowToShow(int whichWindow)
     {
-        if (whichWindow == 1)
+        switch (whichWindow)
         {
-            LoadJsonObject();
-            addProductController.ClearInfo();
+            case 0:
+                registeredProductsController.product.Clear();
+                LoadJsonObject();
+                registeredProductsController.ShowRegisteredWindow();
+                break;
+            case 1:
+                registeredProductsController.DestroyAllProducts();
+                LoadJsonObject();
+                addProductController.ClearInfo();
+                break;
+            case 2:
+                registeredProductsController.DestroyAllProducts();
+                break;
         }
 
         whichWindowsIsOpen = whichWindow;

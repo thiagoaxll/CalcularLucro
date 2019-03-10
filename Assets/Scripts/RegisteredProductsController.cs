@@ -17,61 +17,58 @@ public class RegisteredProductsController : MonoBehaviour
     public GameObject productsBtnHolder;
     public GameObject productsBtn;
 
-    private AddProductController controller;
-
-    private List<GameObject> allProductsBtn = new List<GameObject>();
-
+    public List<GameObject> allProductsBtn = new List<GameObject>();
     public List<Product> product = new List<Product>();
-
     public int indexTotalProducts;
-    public List<string> registredProducts = new List<string>();
 
 
-    private void Awake()
+    public void ShowRegisteredWindow()
     {
-        controller = FindObjectOfType(typeof(AddProductController)) as AddProductController;
-    }
-
-    private void Start()
-    {
+        DestroyAllProducts();
         GetAllRegisteredProductNames();
-        for (int i = 0; i < registredProducts.Count; i++)
+
+        for (int i = 0; i < GeneralController.instance.registredProducts.Count; i++)
         {
             product.Add(LoadProductsFromJson());
             indexTotalProducts++;
-            Debug.Log("XD");
         }
+        indexTotalProducts = 0;
+
+        InstantiateProducts();
     }
 
 
-    private void DestroyAllProducts()
+    public void DestroyAllProducts()
     {
         foreach (GameObject temp in allProductsBtn)
         {
             Destroy(temp.gameObject);
         }
+        allProductsBtn.Clear();
+
     }
 
 
     public void InstantiateProducts()
     {
-        // DestroyAllProducts();
+        for (int i = 0; i < GeneralController.instance.registredProducts.Count; i++)
+        {
+            GameObject temp = Instantiate(productsBtn);
+            temp.transform.SetParent(productsBtnHolder.transform);
 
-        // GameObject temp = Instantiate(productsBtn);
-        // temp.transform.SetParent(productsBtnHolder.transform);
-        // temp.GetComponent<ProductInfo>().product = controller.product;
-        // temp.GetComponentInChildren<Text>().text = controller.product.name;
-        // allProductsBtn.Add(temp);
-
-        //LoadProductsFromJson();
+            temp.GetComponent<ProductInfo>().product = product[i];
+            temp.GetComponentInChildren<Text>().text = product[i].name;
+            allProductsBtn.Add(temp);
+        }
     }
 
 
     private void GetAllRegisteredProductNames()
     {
-        for (int i = 0; i < AddProductController.jsonData["RegisteredProductes"]["products"].Count; i++)
+        GeneralController.instance.registredProducts.Clear();
+        for (int i = 0; i < GeneralController.instance.jsonData["RegisteredProductes"]["products"].Count; i++)
         {
-            registredProducts.Add(AddProductController.jsonData["RegisteredProductes"]["products"][i]);
+            GeneralController.instance.registredProducts.Add(GeneralController.instance.jsonData["RegisteredProductes"]["products"][i]);
         }
     }
 
@@ -82,18 +79,18 @@ public class RegisteredProductsController : MonoBehaviour
         ItemInfo tempItemIngredientes = new ItemInfo();
         List<ItemInfo> itemIngredientes = new List<ItemInfo>();
 
-        tempProduct.name = registredProducts[indexTotalProducts];
-        tempProduct.price = AddProductController.jsonData[registredProducts[indexTotalProducts]]["price"];
-        tempProduct.quantity = AddProductController.jsonData[registredProducts[indexTotalProducts]]["quantity"];
+        tempProduct.name = GeneralController.instance.registredProducts[indexTotalProducts];
+        tempProduct.price = GeneralController.instance.jsonData[GeneralController.instance.registredProducts[indexTotalProducts]]["price"];
+        tempProduct.quantity = GeneralController.instance.jsonData[GeneralController.instance.registredProducts[indexTotalProducts]]["quantity"];
 
-        for (int i = 0; i < AddProductController.jsonData[registredProducts[indexTotalProducts]]["ingredients"].Count; i++)
+        for (int i = 0; i < GeneralController.instance.jsonData[GeneralController.instance.registredProducts[indexTotalProducts]]["ingredients"].Count; i++)
         {
             if (i % 4 == 0 || i == 0)
             {
-                tempItemIngredientes.itemName = AddProductController.jsonData[registredProducts[indexTotalProducts]]["ingredients"][i];
-                tempItemIngredientes.price = AddProductController.jsonData[registredProducts[indexTotalProducts]]["ingredients"][i + 1];
-                tempItemIngredientes.amount = AddProductController.jsonData[registredProducts[indexTotalProducts]]["ingredients"][i + 2];
-                tempItemIngredientes.usedAmmount = AddProductController.jsonData[registredProducts[indexTotalProducts]]["ingredients"][i + 3];
+                tempItemIngredientes.itemName = GeneralController.instance.jsonData[GeneralController.instance.registredProducts[indexTotalProducts]]["ingredients"][i];
+                tempItemIngredientes.price = GeneralController.instance.jsonData[GeneralController.instance.registredProducts[indexTotalProducts]]["ingredients"][i + 1];
+                tempItemIngredientes.amount = GeneralController.instance.jsonData[GeneralController.instance.registredProducts[indexTotalProducts]]["ingredients"][i + 2];
+                tempItemIngredientes.usedAmmount = GeneralController.instance.jsonData[GeneralController.instance.registredProducts[indexTotalProducts]]["ingredients"][i + 3];
                 itemIngredientes.Add(tempItemIngredientes);
             }
         }
