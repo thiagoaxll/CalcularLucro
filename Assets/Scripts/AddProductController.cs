@@ -6,6 +6,7 @@ VERSION: 1.0
 CREATION DATE: 25/02/2019
 */
 using UnityEngine;
+using UnityEngine.UI;
 using System;
 using System.IO;
 using System.Collections.Generic;
@@ -38,15 +39,18 @@ public class AddProductController : MonoBehaviour
     public TMP_InputField quantityTxt;
     public TMP_InputField nameTxt;
 
+    [SerializeField] private Image background;
+    [SerializeField] private Color32 correctColor;
+    [SerializeField] private Color32 incorrectColor;
+
     private float sellPrice;
     private int productQuantity;
     private string productName;
 
     private List<ItemInfo> ingredients = new List<ItemInfo>();
+    private List<GameObject> fillIngredientsContent = new List<GameObject>();
+
     private RegisteredProductsController registeredProductsController;
-
-    private List<GameObject> fillContent = new List<GameObject>();
-
 
     private void Awake()
     {
@@ -56,10 +60,10 @@ public class AddProductController : MonoBehaviour
 
     public void DestroyAllFillContent()
     {
-        for (int i = 0; i < fillContent.Count; i++)
+        for (int i = 0; i < fillIngredientsContent.Count; i++)
         {
-            Destroy(fillContent[i]);
-            fillContent.Remove(fillContent[i]);
+            Destroy(fillIngredientsContent[i]);
+            fillIngredientsContent.Remove(fillIngredientsContent[i]);
         }
     }
 
@@ -69,13 +73,14 @@ public class AddProductController : MonoBehaviour
         GameObject temp = Instantiate(fillInformation);
         temp.transform.SetParent(fillInformationHolder.transform);
         addFillInformationBtn.transform.SetAsLastSibling();
-        fillContent.Add(temp);
+        fillIngredientsContent.Add(temp);
     }
 
 
     public void ItemName(string value)
     {
         productName = value;
+        CheckIfItsAllCorrect();
     }
 
 
@@ -88,6 +93,7 @@ public class AddProductController : MonoBehaviour
             sellPrice = 0;
             priceTxt.text = "";
         }
+        CheckIfItsAllCorrect();
     }
 
 
@@ -99,6 +105,7 @@ public class AddProductController : MonoBehaviour
             productQuantity = 0;
             quantityTxt.text = "";
         }
+        CheckIfItsAllCorrect();
     }
 
 
@@ -123,6 +130,8 @@ public class AddProductController : MonoBehaviour
                 if (ingredients[i].itemName == "" || ingredients[i].price == 0 || ingredients[i].amount == 0 || ingredients[i].usedAmmount == 0)
                 {
                     ingredients.Remove(ingredients[i]);
+                    Destroy(fillIngredientsContent[i]);
+                    fillIngredientsContent.Remove(fillIngredientsContent[i]);
                 }
             }
         }
@@ -133,11 +142,10 @@ public class AddProductController : MonoBehaviour
         }
         else
         {
-            TCode.Utils.DebbugerText("Produto inválido", new Vector2(0, 0), true);
+            TCode.Utils.DebbugerText("Produto inválido", new Vector2(0, 20), true);
         }
 
         GeneralController.instance.WhichWindowToShow(0);
-
     }
 
 
@@ -150,6 +158,19 @@ public class AddProductController : MonoBehaviour
         sellPrice = 0;
         productQuantity = 0;
         productName = "";
+    }
+
+
+    private void CheckIfItsAllCorrect()
+    {
+        if (sellPrice > 0 && productQuantity > 0 && productName != "")
+        {
+            background.color = correctColor;
+        }
+        else
+        {
+            background.color = incorrectColor;
+        }
     }
 
 
