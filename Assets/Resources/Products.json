@@ -1,5 +1,26 @@
 {
-    "RegisteredProductes": {
-        "products": []
+    "teste": {
+        "price": 1,
+        "quantity": 1,
+        "ingredients": [
+            "Testeingrediente",
+            1,
+            1,
+            1,
+            "a",
+            1,
+            1,
+            1
+        ]
+    },
+    "test3": {
+        "price": 1,
+        "quantity": 1,
+        "ingredients": [
+            "Testeingrediente",
+            1,
+            1,
+            1
+        ]
     }
 }

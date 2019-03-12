@@ -88,6 +88,20 @@ public class GeneralController : MonoBehaviour
     }
 
 
+    public void RemoveProductFromJson(int productToRemove)
+    {
+        LoadJsonObject();
+
+        //jsonData["RegisteredProducts"]["products"][0] = null;
+
+        //jsonData.Remove(jsonData[productToRemove + 1]);
+
+        //jsonData.Remove(jsonData[productToRemove]);
+        SaveJsonObject();
+        WhichWindowToShow(0);
+    }
+
+
     public void LoadJsonObject()
     {
 
@@ -95,7 +109,7 @@ public class GeneralController : MonoBehaviour
         jsonData = (JSONObject)JSON.Parse(File.ReadAllText(Application.dataPath + PRODUCT_PATH));
 #endif
 
-#if UNITY_ANDROID
+#if UNITY_ANDROID && !UNITY_EDITOR
         jsonData = (JSONObject)JSON.Parse(File.ReadAllText(Application.persistentDataPath + "/Products.json"));
 #endif
 
@@ -108,8 +122,8 @@ public class GeneralController : MonoBehaviour
         File.WriteAllText(Application.dataPath + PRODUCT_PATH, jsonData.ToString());
 #endif
 
-#if UNITY_ANDROID
-        File.WriteAllText(Application.persistentDataPath + "/Products.json", jsonData.ToString());
+#if UNITY_ANDROID && !UNITY_EDITOR
+                File.WriteAllText(Application.persistentDataPath + "/Products.json", jsonData.ToString());
 #endif
     }
 

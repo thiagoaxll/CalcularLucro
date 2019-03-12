@@ -50,11 +50,11 @@ public class AddProductController : MonoBehaviour
     private List<ItemInfo> ingredients = new List<ItemInfo>();
     private List<GameObject> fillIngredientsContent = new List<GameObject>();
 
-    private RegisteredProductsController registeredProductsController;
+    //private RegisteredProductsController registeredProductsController;
 
     private void Awake()
     {
-        registeredProductsController = FindObjectOfType(typeof(RegisteredProductsController)) as RegisteredProductsController;
+        //registeredProductsController = FindObjectOfType(typeof(RegisteredProductsController)) as RegisteredProductsController;
     }
 
 

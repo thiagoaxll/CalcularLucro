@@ -9,6 +9,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using SimpleJSON;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
 
 public class RegisteredProductsController : MonoBehaviour
 {
@@ -16,10 +17,99 @@ public class RegisteredProductsController : MonoBehaviour
     [Header("Objetos")]
     public GameObject productsBtnHolder;
     public GameObject productsBtn;
+    public GameObject editMenu;
 
     public List<GameObject> allProductsBtn = new List<GameObject>();
     public List<Product> product = new List<Product>();
     public int indexTotalProducts;
+
+    private bool isSelected;
+
+    private float timeToOpenMenu = 1f;
+    private float auxTimeToOpenMenu;
+
+    public static bool editMenuIsOpen;
+    private GameObject editMenuObject;
+
+    private void Start()
+    {
+        auxTimeToOpenMenu = timeToOpenMenu;
+    }
+
+    private void Update()
+    {
+        if (Input.GetMouseButton(0) && !isSelected)
+        {
+            auxTimeToOpenMenu -= Time.deltaTime;
+            if (auxTimeToOpenMenu < 0)
+            {
+                IsMouseOverButton();
+            }
+        }
+        else
+        {
+            auxTimeToOpenMenu = timeToOpenMenu;
+        }
+
+        if (Input.GetMouseButtonDown(0) && isSelected)
+        {
+            //IsMouseOverButton();
+        }
+    }
+
+
+    private void IsMouseOverButton()
+    {
+        PointerEventData pointer = new PointerEventData(EventSystem.current);
+        pointer.position = Input.mousePosition;
+        List<RaycastResult> raycastResult = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(pointer, raycastResult);
+
+        if (!isSelected)
+        {
+            if (raycastResult.Count > 0)
+            {
+                foreach (RaycastResult ray in raycastResult)
+                {
+                    if (ray.gameObject.GetComponent<ProductInfo>() != null)
+                    {
+                        AdjustEditMenuPosition(ray);
+                        break;
+                    }
+                }
+            }
+        }
+        else
+        {
+            bool clickOnEditMenu = false;
+            foreach (RaycastResult ray in raycastResult)
+            {
+                if (ray.gameObject.GetComponent<EditMenu>() != null)
+                {
+                    clickOnEditMenu = true;
+                    break;
+                }
+            }
+            if (!clickOnEditMenu)
+            {
+                isSelected = false;
+                RegisteredProductsController.editMenuIsOpen = false;
+                Destroy(editMenuObject);
+            }
+        }
+    }
+
+
+
+    private void AdjustEditMenuPosition(RaycastResult ray)
+    {
+        RegisteredProductsController.editMenuIsOpen = true;
+        editMenuObject = Instantiate(editMenu);
+        editMenuObject.transform.SetParent(ray.gameObject.transform);
+        editMenuObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(700, 0);
+        editMenuObject.transform.SetParent(ray.gameObject.transform.parent);
+        isSelected = true;
+    }
 
 
     public void ShowRegisteredWindow()
@@ -45,7 +135,6 @@ public class RegisteredProductsController : MonoBehaviour
             Destroy(temp.gameObject);
         }
         allProductsBtn.Clear();
-
     }
 
 
@@ -57,6 +146,7 @@ public class RegisteredProductsController : MonoBehaviour
             temp.transform.SetParent(productsBtnHolder.transform);
 
             temp.GetComponent<ProductInfo>().product = product[i];
+            temp.GetComponent<ProductInfo>().id = i;
             temp.GetComponentInChildren<Text>().text = product[i].name;
             allProductsBtn.Add(temp);
         }
@@ -66,9 +156,9 @@ public class RegisteredProductsController : MonoBehaviour
     private void GetAllRegisteredProductNames()
     {
         GeneralController.instance.registredProducts.Clear();
-        for (int i = 0; i < GeneralController.instance.jsonData["RegisteredProductes"]["products"].Count; i++)
+        for (int i = 0; i < GeneralController.instance.jsonData["RegisteredProducts"]["products"].Count; i++)
         {
-            GeneralController.instance.registredProducts.Add(GeneralController.instance.jsonData["RegisteredProductes"]["products"][i]);
+            GeneralController.instance.registredProducts.Add(GeneralController.instance.jsonData["RegisteredProducts"]["products"][i]);
         }
     }
 
