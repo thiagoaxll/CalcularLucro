@@ -21,7 +21,7 @@ public class FillInformation : MonoBehaviour
 
     public ItemInfo information = new ItemInfo();
 
-    private Color32 defaultColor = new Color32(231, 231, 231, 125);
+    private Color32 defaultColor = new Color32(255, 255, 255, 255);
 
     public void ChangeName(string value)
     {
@@ -58,7 +58,7 @@ public class FillInformation : MonoBehaviour
     {
         if (information.itemName != "" && information.price > 0 && information.amount > 0 && information.usedAmmount > 0)
         {
-            background.color = new Color32(0, 255, 0, 125);
+            background.color = new Color32(0, 255, 0, 255);
         }
         else
         {
@@ -73,6 +73,7 @@ public class FillInformation : MonoBehaviour
         priceTxt.text = price.ToString("F2");
         amountTxt.text = amount.ToString("F2");
         usedAmountTxt.text = usedAmount.ToString("F2");
+
 
         information.itemName = name;
         information.price = price;

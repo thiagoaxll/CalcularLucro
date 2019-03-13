@@ -49,13 +49,7 @@ public class AddProductController : MonoBehaviour
 
     private List<ItemInfo> ingredients = new List<ItemInfo>();
     private List<GameObject> fillIngredientsContent = new List<GameObject>();
-
-    //private RegisteredProductsController registeredProductsController;
-
-    private void Awake()
-    {
-        //registeredProductsController = FindObjectOfType(typeof(RegisteredProductsController)) as RegisteredProductsController;
-    }
+    private bool repeatedName;
 
 
     public void DestroyAllFillContent()
@@ -135,13 +129,13 @@ public class AddProductController : MonoBehaviour
             }
         }
 
-        if (product.name != "" && product.price > 0 && product.quantity > 0 && ingredients.Count > 0)
+        if (product.name != "" && product.price > 0 && product.quantity > 0 && ingredients.Count > 0 && !repeatedName)
         {
             StoreInfoInJson();
         }
         else
         {
-            TCode.Utils.DebbugerText("Produto inválido", new Vector2(0, 20), true);
+            TCode.Utils.DebbugerText("Produto inválido", new Vector2(0, 4), true);
         }
         ClearInfo();
         DestroyAllFillContent();
@@ -152,6 +146,7 @@ public class AddProductController : MonoBehaviour
     public void ClearInfo()
     {
         product = new Product();
+        ingredients.Clear();
         background.color = incorrectColor;
         nameTxt.text = "";
         priceTxt.text = "";
@@ -165,6 +160,17 @@ public class AddProductController : MonoBehaviour
 
     private void CheckIfItsAllCorrect()
     {
+
+        foreach (var temp in GeneralController.instance.jsonData)
+        {
+            if (temp.Key == productName)
+            {
+                repeatedName = true;
+                return;
+            }
+        }
+        repeatedName = false;
+
         if (sellPrice > 0 && productQuantity > 0 && productName != "")
         {
             background.color = correctColor;
@@ -178,6 +184,7 @@ public class AddProductController : MonoBehaviour
 
     private void StoreInfoInJson()
     {
+        GeneralController.instance.LoadJsonObject();
         string[] Productfields = { "name", "price", "quantity" };
 
         GeneralController.instance.jsonData[product.name].Add(Productfields[1], product.price);
@@ -193,7 +200,6 @@ public class AddProductController : MonoBehaviour
         }
 
         GeneralController.instance.SaveJsonObject();
-        GeneralController.instance.LoadJsonObject();
     }
 
 

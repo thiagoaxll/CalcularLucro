@@ -18,8 +18,8 @@ namespace TCode
         public static Vector2 ConvertCanvasPositionToScale(Vector2 pos)
         {
             Vector2 positionConverted = pos;
-            positionConverted.x = (positionConverted.x * 1920) / (100);
-            positionConverted.y = (positionConverted.y * 1080) / (100) * -1;
+            positionConverted.x = (positionConverted.x * 1080) / (100);
+            positionConverted.y = (positionConverted.y * 1920) / (100) * -1;
             return positionConverted;
         }
 

@@ -22,7 +22,6 @@ public class ProductInfo : MonoBehaviour
     }
 
 
-
     public void CalculateWindow()
     {
         if (!RegisteredProductsController.editMenuIsOpen)

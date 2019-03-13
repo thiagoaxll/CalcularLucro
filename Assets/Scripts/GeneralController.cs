@@ -14,7 +14,8 @@ using System.IO;
 public class GeneralController : MonoBehaviour
 {
 
-    const string PRODUCT_PATH = "/Resources/Products.json";
+    const string PRODUCT_PATH_PC = "/StreamingAssets/";
+    const string PRODUCT_FILE = "Products.json";
 
     [SerializeField] private AddProductController addProductController;
     [SerializeField] private RegisteredProductsController registeredProductsController;
@@ -33,21 +34,47 @@ public class GeneralController : MonoBehaviour
 
     private void Awake()
     {
-        if (!PlayerPrefs.HasKey("Setup"))
-        {
-            dataText = Resources.Load("Products") as TextAsset;
-            File.WriteAllText(Application.persistentDataPath + "/Products.json", dataText.ToString());
-            PlayerPrefs.SetString("Setup", "configurado");
-        }
+
+        CheckIfProductFileExists();
         LoadJsonObject();
         instance = this;
         WhichWindowToShow(0);
     }
 
 
+    private void CheckIfProductFileExists()
+    {
+#if UNITY_ANDROID && !UNITY_EDITOR
+        if(!File.Exists(Application.persistentDataPath + "/Products.json"))
+        {
+            CreateProductFile();
+        }
+#endif
+#if UNITY_EDITOR || UNITY_EDITOR_WIN
+        if (!File.Exists(Application.dataPath + "/StreamingAssets/Products.json"))
+        {
+            CreateProductFile();
+        }
+#endif
+    }
+
+
+    public void CreateProductFile()
+    {
+        dataText = Resources.Load("Products_Template") as TextAsset;
+#if UNITY_ANDROID && !UNITY_EDITOR
+        File.WriteAllText(Application.persistentDataPath + "/Products.json", dataText.ToString());
+#endif
+
+#if UNITY_EDITOR || UNITY_EDITOR_WIN
+        File.WriteAllText(Application.dataPath + "/StreamingAssets/Products.json", dataText.ToString());
+#endif
+    }
+
+
     public void DelleteAllRegisteredProducts()
     {
-        PlayerPrefs.DeleteKey("Setup");
+        CreateProductFile();
         UnityEngine.SceneManagement.SceneManager.LoadScene("Main");
     }
 
@@ -100,6 +127,8 @@ public class GeneralController : MonoBehaviour
     public void RemoveProductFromJson(int productToRemove)
     {
         LoadJsonObject();
+        registredProducts.Remove(registredProducts[productToRemove]);
+        registeredProductsController.product.Remove(registeredProductsController.product[productToRemove]);
         jsonData["RegisteredProducts"]["products"].Remove(jsonData["RegisteredProducts"]["products"][productToRemove]);
         jsonData.Remove(jsonData[productToRemove + 1]);
         SaveJsonObject();
@@ -108,9 +137,10 @@ public class GeneralController : MonoBehaviour
 
     public void EditProduct(int productToEdit)
     {
+        Product tempProductToEdit = new Product();
+        tempProductToEdit = registeredProductsController.product[productToEdit];
         RemoveProductFromJson(productToEdit);
-        addProductController.EditProduct(registeredProductsController.product[productToEdit]);
-
+        addProductController.EditProduct(tempProductToEdit);
     }
 
 
@@ -118,11 +148,11 @@ public class GeneralController : MonoBehaviour
     {
 
 #if UNITY_EDITOR_WIN
-        jsonData = (JSONObject)JSON.Parse(File.ReadAllText(Application.dataPath + PRODUCT_PATH));
+        jsonData = (JSONObject)JSON.Parse(File.ReadAllText(Application.dataPath + PRODUCT_PATH_PC + PRODUCT_FILE));
 #endif
 
 #if UNITY_ANDROID && !UNITY_EDITOR
-        jsonData = (JSONObject)JSON.Parse(File.ReadAllText(Application.persistentDataPath + "/Products.json"));
+        jsonData = (JSONObject)JSON.Parse(File.ReadAllText(Application.persistentDataPath + "/" + PRODUCT_FILE));
 #endif
 
     }
@@ -131,11 +161,11 @@ public class GeneralController : MonoBehaviour
     public void SaveJsonObject()
     {
 #if UNITY_EDITOR_WIN
-        File.WriteAllText(Application.dataPath + PRODUCT_PATH, jsonData.ToString());
+        File.WriteAllText(Application.dataPath + PRODUCT_PATH_PC + PRODUCT_FILE, jsonData.ToString());
 #endif
 
 #if UNITY_ANDROID && !UNITY_EDITOR
-                File.WriteAllText(Application.persistentDataPath + "/Products.json", jsonData.ToString());
+        File.WriteAllText(Application.persistentDataPath + "/" + PRODUCT_FILE, jsonData.ToString());
 #endif
     }
 
