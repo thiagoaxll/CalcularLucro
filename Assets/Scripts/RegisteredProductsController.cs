@@ -36,7 +36,14 @@ public class RegisteredProductsController : MonoBehaviour
         auxTimeToOpenMenu = timeToOpenMenu;
     }
 
+
     private void Update()
+    {
+        HanldeInputToOpenEditMenu();
+    }
+
+
+    private void HanldeInputToOpenEditMenu()
     {
         if (Input.GetMouseButton(0) && !isSelected)
         {
@@ -53,7 +60,7 @@ public class RegisteredProductsController : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0) && isSelected)
         {
-            //IsMouseOverButton();
+            IsMouseOverButton();
         }
     }
 
@@ -73,8 +80,10 @@ public class RegisteredProductsController : MonoBehaviour
                 {
                     if (ray.gameObject.GetComponent<ProductInfo>() != null)
                     {
+                        RegisteredProductsController.editMenuIsOpen = true;
+                        isSelected = true;
                         AdjustEditMenuPosition(ray);
-                        break;
+                        return;
                     }
                 }
             }
@@ -84,7 +93,7 @@ public class RegisteredProductsController : MonoBehaviour
             bool clickOnEditMenu = false;
             foreach (RaycastResult ray in raycastResult)
             {
-                if (ray.gameObject.GetComponent<EditMenu>() != null)
+                if (ray.gameObject.GetComponentInParent<EditMenu>() != null)
                 {
                     clickOnEditMenu = true;
                     break;
@@ -100,15 +109,14 @@ public class RegisteredProductsController : MonoBehaviour
     }
 
 
-
     private void AdjustEditMenuPosition(RaycastResult ray)
     {
-        RegisteredProductsController.editMenuIsOpen = true;
+        editMenu.GetComponent<EditMenu>().index = ray.gameObject.GetComponent<ProductInfo>().id;
+        editMenu.GetComponent<EditMenu>().editProduct = ray.gameObject.GetComponent<ProductInfo>().product;
         editMenuObject = Instantiate(editMenu);
         editMenuObject.transform.SetParent(ray.gameObject.transform);
         editMenuObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(700, 0);
         editMenuObject.transform.SetParent(ray.gameObject.transform.parent);
-        isSelected = true;
     }
 
 

@@ -122,7 +122,6 @@ public class AddProductController : MonoBehaviour
         product.quantity = productQuantity;
         product.ingredients = ingredients;
 
-
         if (ingredients.Count > 0)
         {
             for (int i = 0; i < ingredients.Count; i++)
@@ -144,13 +143,16 @@ public class AddProductController : MonoBehaviour
         {
             TCode.Utils.DebbugerText("Produto inválido", new Vector2(0, 20), true);
         }
-
+        ClearInfo();
+        DestroyAllFillContent();
         GeneralController.instance.WhichWindowToShow(0);
     }
 
 
     public void ClearInfo()
     {
+        product = new Product();
+        background.color = incorrectColor;
         nameTxt.text = "";
         priceTxt.text = "";
         quantityTxt.text = "";
@@ -176,12 +178,11 @@ public class AddProductController : MonoBehaviour
 
     private void StoreInfoInJson()
     {
-
         string[] Productfields = { "name", "price", "quantity" };
 
         GeneralController.instance.jsonData[product.name].Add(Productfields[1], product.price);
         GeneralController.instance.jsonData[product.name].Add(Productfields[2], product.quantity);
-        GeneralController.instance.jsonData["RegisteredProductes"]["products"].Add(product.name);
+        GeneralController.instance.jsonData["RegisteredProducts"]["products"].Add(product.name);
 
         for (int i = 0; i < product.ingredients.Count; i++)
         {
@@ -193,6 +194,35 @@ public class AddProductController : MonoBehaviour
 
         GeneralController.instance.SaveJsonObject();
         GeneralController.instance.LoadJsonObject();
+    }
+
+
+    public void EditProduct(Product tempProduct)
+    {
+        ClearInfo();
+        sellPrice = tempProduct.price;
+        productQuantity = tempProduct.quantity;
+        productName = tempProduct.name;
+
+        nameTxt.text = tempProduct.name;
+        priceTxt.text = tempProduct.price.ToString();
+        quantityTxt.text = tempProduct.quantity.ToString();
+
+        for (int i = 0; i < tempProduct.ingredients.Count; i++)
+        {
+            GameObject temp = Instantiate(fillInformation);
+            temp.transform.SetParent(fillInformationHolder.transform);
+            addFillInformationBtn.transform.SetAsLastSibling();
+            fillIngredientsContent.Add(temp);
+
+            FillInformation informationContent = temp.GetComponent<FillInformation>();
+            informationContent.SetInformation(tempProduct.ingredients[i].itemName, tempProduct.ingredients[i].price,
+                tempProduct.ingredients[i].amount, tempProduct.ingredients[i].usedAmmount);
+            informationContent.CheckIfItsAllCorrect();
+        }
+
+        CheckIfItsAllCorrect();
+
     }
 
 }

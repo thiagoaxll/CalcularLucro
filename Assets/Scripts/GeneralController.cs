@@ -26,11 +26,8 @@ public class GeneralController : MonoBehaviour
     public int whichWindowsIsOpen;
 
     public static GeneralController instance { get; private set; }
-
     public JSONObject jsonData;
-
     public List<string> registredProducts = new List<string>();
-
     private TextAsset dataText;
 
 
@@ -60,20 +57,17 @@ public class GeneralController : MonoBehaviour
         switch (whichWindow)
         {
             case 0:
-                registeredProductsController.product.Clear();
+                ClearRegisteredProductWindow();
                 LoadJsonObject();
-                registeredProductsController.ShowRegisteredWindow();
                 break;
             case 1:
-                addProductController.DestroyAllFillContent();
-                registeredProductsController.DestroyAllProducts();
+                ClearInstertProductWindow();
                 LoadJsonObject();
-
-                addProductController.ClearInfo();
                 break;
             case 2:
                 registeredProductsController.DestroyAllProducts();
                 break;
+
         }
 
         whichWindowsIsOpen = whichWindow;
@@ -88,17 +82,35 @@ public class GeneralController : MonoBehaviour
     }
 
 
+    private void ClearRegisteredProductWindow()
+    {
+        registeredProductsController.product.Clear();
+        registeredProductsController.ShowRegisteredWindow();
+    }
+
+
+    private void ClearInstertProductWindow()
+    {
+        registeredProductsController.DestroyAllProducts();
+        addProductController.DestroyAllFillContent();
+        addProductController.ClearInfo();
+    }
+
+
     public void RemoveProductFromJson(int productToRemove)
     {
         LoadJsonObject();
-
-        //jsonData["RegisteredProducts"]["products"][0] = null;
-
-        //jsonData.Remove(jsonData[productToRemove + 1]);
-
-        //jsonData.Remove(jsonData[productToRemove]);
+        jsonData["RegisteredProducts"]["products"].Remove(jsonData["RegisteredProducts"]["products"][productToRemove]);
+        jsonData.Remove(jsonData[productToRemove + 1]);
         SaveJsonObject();
-        WhichWindowToShow(0);
+    }
+
+
+    public void EditProduct(int productToEdit)
+    {
+        RemoveProductFromJson(productToEdit);
+        addProductController.EditProduct(registeredProductsController.product[productToEdit]);
+
     }
 
 

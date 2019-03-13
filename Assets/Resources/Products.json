@@ -1,9 +1,16 @@
 {
-    "teste": {
+    "RegisteredProducts": {
+        "products": [
+            "Cigarro",
+            "Marry",
+            "Produto2"
+        ]
+    },
+    "Cigarro": {
         "price": 1,
         "quantity": 1,
         "ingredients": [
-            "Testeingrediente",
+            "a",
             1,
             1,
             1,
@@ -13,11 +20,29 @@
             1
         ]
     },
-    "test3": {
+    "Produto2": {
         "price": 1,
         "quantity": 1,
         "ingredients": [
-            "Testeingrediente",
+            "Areia2",
+            1,
+            1,
+            1,
+            "Pedra2",
+            1,
+            1,
+            1
+        ]
+    },
+    "Marry": {
+        "price": 1,
+        "quantity": 1,
+        "ingredients": [
+            "x",
+            1,
+            1,
+            1,
+            "y",
             1,
             1,
             1

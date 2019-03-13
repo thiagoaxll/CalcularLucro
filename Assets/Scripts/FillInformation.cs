@@ -12,7 +12,6 @@ using UnityEngine.UI;
 
 public class FillInformation : MonoBehaviour
 {
-
     [SerializeField] private TextMeshProUGUI nameTxt;
     [SerializeField] private TextMeshProUGUI priceTxt;
     [SerializeField] private TextMeshProUGUI amountTxt;
@@ -55,7 +54,7 @@ public class FillInformation : MonoBehaviour
     }
 
 
-    private void CheckIfItsAllCorrect()
+    public void CheckIfItsAllCorrect()
     {
         if (information.itemName != "" && information.price > 0 && information.amount > 0 && information.usedAmmount > 0)
         {
@@ -65,6 +64,20 @@ public class FillInformation : MonoBehaviour
         {
             background.color = defaultColor;
         }
+    }
+
+
+    public void SetInformation(string name, float price, float amount, float usedAmount)
+    {
+        nameTxt.text = name;
+        priceTxt.text = price.ToString("F2");
+        amountTxt.text = amount.ToString("F2");
+        usedAmountTxt.text = usedAmount.ToString("F2");
+
+        information.itemName = name;
+        information.price = price;
+        information.amount = amount;
+        information.usedAmmount = usedAmount;
     }
 
 }
