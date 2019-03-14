@@ -115,7 +115,7 @@ public class RegisteredProductsController : MonoBehaviour
         editMenu.GetComponent<EditMenu>().editProduct = ray.gameObject.GetComponent<ProductInfo>().product;
         editMenuObject = Instantiate(editMenu);
         editMenuObject.transform.SetParent(ray.gameObject.transform);
-        editMenuObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(600, 0);
+        editMenuObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(100, 0);
         editMenuObject.transform.SetParent(ray.gameObject.transform.parent);
     }
 
