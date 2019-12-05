@@ -5,6 +5,7 @@ AUTHOR: Thiago Z Silva
 VERSION: 1.0
 CREATION DATE: 25/02/2019
 */
+
 using UnityEngine;
 using UnityEngine.UI;
 using System;
@@ -16,26 +17,17 @@ using SimpleJSON;
 
 public class AddProductController : MonoBehaviour
 {
+    [Header("Classes")] public Product product = new Product();
 
-    [Header("Classes")]
-    public Product product = new Product();
+    [Header("Objetos")] public GameObject fillInformation;
 
-    [Header("Objetos")]
-    public GameObject fillInformation;
+    [Header("Windows")] public GameObject[] windows;
 
-    [Header("Windows")]
-    public GameObject[] windows;
-
-    [Header("Referencias")]
-    public GameObject fillInformationHolder;
+    [Header("Referencias")] public GameObject fillInformationHolder;
     public GameObject addFillInformationBtn;
 
-    [Header("Status")]
-    public int whichWindowsIsOpen;
-    [Space(20)]
-
-    [Header("Texts")]
-    public TMP_InputField priceTxt;
+    [Header("Status")] public int whichWindowsIsOpen;
+    [Space(20)] [Header("Texts")] public TMP_InputField priceTxt;
     public TMP_InputField quantityTxt;
     public TMP_InputField nameTxt;
 
@@ -51,6 +43,13 @@ public class AddProductController : MonoBehaviour
     private List<GameObject> fillIngredientsContent = new List<GameObject>();
     private bool repeatedName;
 
+    private void Update()
+    {
+        if (Input.GetButtonDown("Cancel"))
+        {
+            Save();
+        }
+    }
 
     public void DestroyAllFillContent()
     {
@@ -81,24 +80,33 @@ public class AddProductController : MonoBehaviour
     public void SellPrice(string value)
     {
         value = value.Replace(",", ".");
-        try { sellPrice = float.Parse(value); priceTxt.text = "R$ : " + sellPrice.ToString("F2"); }
+        try
+        {
+            sellPrice = float.Parse(value);
+            priceTxt.text = "R$ : " + sellPrice.ToString("F2");
+        }
         catch
         {
             sellPrice = 0;
             priceTxt.text = "";
         }
+
         CheckIfItsAllCorrect();
     }
 
 
     public void ProductQuantity(string value)
     {
-        try { productQuantity = int.Parse(value); }
+        try
+        {
+            productQuantity = int.Parse(value);
+        }
         catch
         {
             productQuantity = 0;
             quantityTxt.text = "";
         }
+
         CheckIfItsAllCorrect();
     }
 
@@ -120,7 +128,8 @@ public class AddProductController : MonoBehaviour
         {
             for (int i = 0; i < ingredients.Count; i++)
             {
-                if (ingredients[i].itemName == "" || ingredients[i].price == 0 || ingredients[i].amount == 0 || ingredients[i].usedAmmount == 0)
+                if (ingredients[i].itemName == "" || ingredients[i].price == 0 || ingredients[i].amount == 0 ||
+                    ingredients[i].usedAmmount == 0)
                 {
                     ingredients.Remove(ingredients[i]);
                     Destroy(fillIngredientsContent[i]);
@@ -137,6 +146,7 @@ public class AddProductController : MonoBehaviour
         {
             TCode.Utils.DebbugerText("Produto inválido", new Vector2(0, 4), true);
         }
+
         ClearInfo();
         DestroyAllFillContent();
         GeneralController.instance.WhichWindowToShow(0);
@@ -160,7 +170,6 @@ public class AddProductController : MonoBehaviour
 
     private void CheckIfItsAllCorrect()
     {
-
         foreach (var temp in GeneralController.instance.jsonData)
         {
             if (temp.Key == productName)
@@ -169,6 +178,7 @@ public class AddProductController : MonoBehaviour
                 return;
             }
         }
+
         repeatedName = false;
 
         if (sellPrice > 0 && productQuantity > 0 && productName != "")
@@ -185,7 +195,7 @@ public class AddProductController : MonoBehaviour
     private void StoreInfoInJson()
     {
         GeneralController.instance.LoadJsonObject();
-        string[] Productfields = { "name", "price", "quantity" };
+        string[] Productfields = {"name", "price", "quantity"};
 
         GeneralController.instance.jsonData[product.name].Add(Productfields[1], product.price);
         GeneralController.instance.jsonData[product.name].Add(Productfields[2], product.quantity);
@@ -228,7 +238,5 @@ public class AddProductController : MonoBehaviour
         }
 
         CheckIfItsAllCorrect();
-
     }
-
 }

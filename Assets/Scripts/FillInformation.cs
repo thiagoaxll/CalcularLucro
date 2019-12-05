@@ -5,6 +5,7 @@ AUTHOR: Thiago Z Silva
 VERSION: 1.0
 CREATION DATE: 25/02/2019
 */
+
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
@@ -22,6 +23,14 @@ public class FillInformation : MonoBehaviour
     public ItemInfo information = new ItemInfo();
 
     private Color32 defaultColor = new Color32(255, 255, 255, 255);
+
+    private void Start()
+    {
+        Vector2 size = transform.localScale;
+        size.x = size.x / 720 * Screen.width;
+        size.y = size.y / 1280 * Screen.height;
+        transform.localScale = size;
+    }
 
     public void ChangeName(string value)
     {

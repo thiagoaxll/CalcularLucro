@@ -12,6 +12,14 @@ public class EditMenu : MonoBehaviour
     public int index;
     public Product editProduct = new Product();
 
+    private void Start()
+    {
+        Vector2 size = transform.localScale;
+        size.x = size.x / 720 * Screen.width;
+        size.y = size.y / 1280 * Screen.height;
+        transform.localScale = size;
+    }
+
     public void Delete()
     {
         GeneralController.instance.RemoveProductFromJson(index);

@@ -40,6 +40,7 @@ public class RegisteredProductsController : MonoBehaviour
     private void Update()
     {
         HanldeInputToOpenEditMenu();
+        
     }
 
 
